@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2020
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPFBlanksGenerator", "WPFBlanksGenerator\WPFBlanksGenerator.csproj", "{07F38E3F-2784-471F-8DAD-0441A79CCBEC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{07F38E3F-2784-471F-8DAD-0441A79CCBEC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{07F38E3F-2784-471F-8DAD-0441A79CCBEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{07F38E3F-2784-471F-8DAD-0441A79CCBEC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{07F38E3F-2784-471F-8DAD-0441A79CCBEC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1CF9D4BA-E416-4715-AA47-471A34E5CD20}
+	EndGlobalSection
+EndGlobal
