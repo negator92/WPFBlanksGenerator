@@ -14,6 +14,10 @@
         </ResourceDictionary>
     </Window.Resources>
     <DockPanel Margin="0">
+        <DockPanel DockPanel.Dock="Top">
+            <TextBlock Text="Name:" DockPanel.Dock="Left"/>
+            <TextBox Text="{Binding Solution.Name}" />
+        </DockPanel>
         <Button DockPanel.Dock="Bottom" Margin="5,0,5,5">
             <TextBlock Text="Create WPF project" Margin="5,0,5,0"/>
         </Button>
@@ -22,11 +26,29 @@
                 <TextBlock Text="Choose" Margin="5,0,5,0"/>
             </Button>
             <TextBlock Text="Path:" DockPanel.Dock="Left" />
-            <TextBox Text="ProjectPath" />
+            <TextBox Text="{Binding Solution.Path}" />
         </DockPanel>
-        <DockPanel>
-            <TextBlock Text="Name:" DockPanel.Dock="Left"/>
-            <TextBox Text="ProjectName" />
-        </DockPanel>
+        <ScrollViewer Focusable="False" VerticalScrollBarVisibility="Visible" Margin="5,0,5,0">
+            <ItemsControl Focusable="False" VerticalAlignment="Center"
+                          ItemsSource="{Binding Solution.ProjectsList}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <UniformGrid Columns="1" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <DockPanel>
+                            <TextBlock Text="Project:" DockPanel.Dock="Left" />
+                            <ComboBox DockPanel.Dock="Right" />
+                            <Button DockPanel.Dock="Right">
+                                <TextBlock Text="+" Margin="5,0,5,0" />
+                            </Button>
+                            <TextBox Text="{Binding Name}" />
+                        </DockPanel>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
     </DockPanel>
 </Window>
