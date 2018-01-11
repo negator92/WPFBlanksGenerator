@@ -7,59 +7,19 @@
         DataContext="{Binding ApplicationViewModel, Source={x:Static Application.Current}}" 
         Title="WPF template creator" MinHeight="300" MinWidth="450" Background="#333333">
     <Window.Resources>
-        <Style TargetType="{x:Type Button}">
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type Button}">
-                        <Border Background="{TemplateBinding Background}" BorderBrush="Black" BorderThickness="1">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-            <Setter Property="Background" Value="#222222" />
-            <Setter Property="Margin" Value="5,0,0,0" />
-            <Setter Property="DockPanel.Dock" Value="Right" />
-            <Setter Property="Padding" Value="1" />
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#444444" />
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-        <Style TargetType="{x:Type DockPanel}">
-            <Setter Property="Margin" Value="5" />
-            <Setter Property="DockPanel.Dock" Value="Top" />
-        </Style>
-        <Style TargetType="{x:Type TextBlock}">
-            <Setter Property="DockPanel.Dock" Value="Left" />
-            <Setter Property="FontSize" Value="14" />
-            <Setter Property="Foreground" Value="#EEEEEE" />
-            <Setter Property="HorizontalAlignment" Value="Center" />
-            <Setter Property="TextWrapping" Value="Wrap" />
-            <Setter Property="VerticalAlignment" Value="Center" />
-            <Style.Triggers>
-                <Trigger Property="IsEnabled" Value="False">
-                    <Setter Property="Foreground" Value="DimGray" />
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-        <Style TargetType="{x:Type TextBox}">
-            <Setter Property="HorizontalAlignment" Value="Stretch" />
-            <Setter Property="HorizontalContentAlignment" Value="Left" />
-            <Setter Property="Margin" Value="5,0,0,0" />
-            <Setter Property="Padding" Value="2" />
-            <Setter Property="TextAlignment" Value="Left" />
-            <Setter Property="VerticalAlignment" Value="Center" />
-        </Style>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/WPFBlanksGenerator;component/StylesResources.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Window.Resources>
     <DockPanel Margin="0">
         <Button DockPanel.Dock="Bottom" Margin="5,0,5,5">
-            <TextBlock Text="Create WPF project" Margin="5" />
+            <TextBlock Text="Create WPF project" Margin="5,0,5,0"/>
         </Button>
         <DockPanel DockPanel.Dock="Bottom">
             <Button>
-                <TextBlock Text="Choose" Margin="5"/>
+                <TextBlock Text="Choose" Margin="5,0,5,0"/>
             </Button>
             <TextBlock Text="Path:" DockPanel.Dock="Left" />
             <TextBox Text="ProjectPath" />
