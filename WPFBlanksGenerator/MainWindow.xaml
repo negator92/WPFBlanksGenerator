@@ -39,11 +39,11 @@
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <DockPanel>
-                            <TextBlock Text="Project:" DockPanel.Dock="Left" />
-                            <ComboBox DockPanel.Dock="Right" />
-                            <Button DockPanel.Dock="Right">
-                                <TextBlock Text="+" Margin="5,0,5,0" />
+                            <TextBlock Text="Project:" DockPanel.Dock="Left" Foreground="White" />
+                            <Button DockPanel.Dock="Right" Margin="0,0,5,0">
+                                <TextBlock Text="+" Margin="5,0,5,0" Foreground="White" />
                             </Button>
+                            <ComboBox DockPanel.Dock="Right" Margin="5,0,5,0" />
                             <TextBox Text="{Binding Name}" />
                         </DockPanel>
                     </DataTemplate>

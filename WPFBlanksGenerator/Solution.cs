@@ -7,6 +7,9 @@ namespace WPFBlanksGenerator
     {
         public string Name { get; set; } = "Solution name";
         public string Path { get; set; } = "Where place solution";
-        public List<Project> ProjectsList { get; set; } = new List<Project>();
+        public List<Project> ProjectsList { get; set; } = new List<Project>()
+        {
+            new Project(),
+        };
     }
 }
