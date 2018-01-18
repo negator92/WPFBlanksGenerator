@@ -22,7 +22,7 @@
             <TextBlock Text="Create WPF project" Margin="5,0,5,0"/>
         </Button>
         <DockPanel DockPanel.Dock="Bottom">
-            <Button>
+            <Button Command="{Binding SetFolderComand}">
                 <TextBlock Text="Choose" Margin="5,0,5,0"/>
             </Button>
             <TextBlock Text="Path:" DockPanel.Dock="Left" />
