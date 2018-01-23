@@ -8,7 +8,7 @@ using MessageBox = System.Windows.MessageBox;
 
 namespace WPFBlanksGenerator
 {
-    public class ApplicationViewModel : PropertyChange, INotifyPropertyChanged
+    public class ApplicationViewModel : PropertyChange
     {
         private const string OpenFileDialogFilter = "Solution file|*.sln";
         private const string OpenFileDialogTitle = "Select a Solution file with WPF project";
@@ -34,18 +34,30 @@ namespace WPFBlanksGenerator
 
                 if (openFileDialog.ShowDialog() == DialogResult.Cancel)
                     return;
-                
-                try
+
+                if (File.Exists(openFileDialog.FileName))
                 {
-                    if (File.Exists(openFileDialog.FileName))
-                        Solution.Path = openFileDialog.FileName;
-                }
-                catch (Exception e)
-                {
-                    MessageBox.Show($"{e.Message}\n{e.StackTrace}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    try
+                    {
+                        Solution.Name = Path.GetFileNameWithoutExtension(openFileDialog.FileName);
+                        Solution.Path = Path.GetFullPath(openFileDialog.FileName);
+                        var v = File.ReadLines()
+                        foreach (var project in )
+                        {
+                            
+                        }
+                        Solution.ProjectsArray = new Project[]
+                        {
+                            new Project(),
+                        };
+                    }
+                    catch (Exception e)
+                    {
+                        MessageBox.Show($"{e.Message}\n{e.StackTrace}", "Error", MessageBoxButton.OK,
+                            MessageBoxImage.Error);
+                    }
                 }
             }
-            MessageBox.Show($"You choose {Solution.Path}");
         }
     }
 }

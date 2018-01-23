@@ -15,22 +15,21 @@
     </Window.Resources>
     <DockPanel Margin="0">
         <DockPanel DockPanel.Dock="Top">
-            <TextBlock Text="Solution:" DockPanel.Dock="Left" />
+            <TextBlock Text="Solution:" Foreground="#5Fe9A0" DockPanel.Dock="Left" />
             <Button Command="{Binding SetSlnCommand}" DockPanel.Dock="Right">
                 <TextBlock Text="Choose sln" Margin="5,0,5,0"/>
             </Button>
-            <TextBox Text="{Binding Path=Solution.Name, UpdateSourceTrigger=PropertyChanged}" />
+            <TextBlock Text="{Binding Solution.Name}" HorizontalAlignment="Left" />
         </DockPanel>
         <DockPanel DockPanel.Dock="Top">
-            <TextBlock Text="Path:" DockPanel.Dock="Left" />
-            <TextBlock Text="{Binding Path=Solution.Path, UpdateSourceTrigger=PropertyChanged}" />
+            <TextBlock Text="Path:" Foreground="#5Fe9A0" DockPanel.Dock="Left" />
+            <TextBlock Text="{Binding Solution.Path}" HorizontalAlignment="Left" />
         </DockPanel>
         <Button DockPanel.Dock="Bottom" Margin="5">
             <TextBlock Text="Create WPF project" Margin="5,0,5,0"/>
         </Button>
-        <ScrollViewer Focusable="False" VerticalScrollBarVisibility="Visible" Margin="5,0,5,0">
             <ItemsControl Focusable="False" VerticalAlignment="Center"
-                          ItemsSource="{Binding Solution.ProjectsList}">
+                          ItemsSource="{Binding Solution.ProjectsArray}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <UniformGrid Columns="1" />
@@ -49,6 +48,5 @@
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
-        </ScrollViewer>
     </DockPanel>
 </Window>
