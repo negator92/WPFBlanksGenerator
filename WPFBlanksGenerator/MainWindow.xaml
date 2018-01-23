@@ -15,19 +15,19 @@
     </Window.Resources>
     <DockPanel Margin="0">
         <DockPanel DockPanel.Dock="Top">
-            <TextBlock Text="Name:" DockPanel.Dock="Left"/>
-            <TextBox Text="{Binding Solution.Name}" />
+            <TextBlock Text="Solution:" DockPanel.Dock="Left" />
+            <Button Command="{Binding SetSlnCommand}" DockPanel.Dock="Right">
+                <TextBlock Text="Choose sln" Margin="5,0,5,0"/>
+            </Button>
+            <TextBox Text="{Binding Path=Solution.Name, UpdateSourceTrigger=PropertyChanged}" />
         </DockPanel>
-        <Button DockPanel.Dock="Bottom" Margin="5,0,5,5">
+        <DockPanel DockPanel.Dock="Top">
+            <TextBlock Text="Path:" DockPanel.Dock="Left" />
+            <TextBlock Text="{Binding Path=Solution.Path, UpdateSourceTrigger=PropertyChanged}" />
+        </DockPanel>
+        <Button DockPanel.Dock="Bottom" Margin="5">
             <TextBlock Text="Create WPF project" Margin="5,0,5,0"/>
         </Button>
-        <DockPanel DockPanel.Dock="Bottom">
-            <Button Command="{Binding SetFolderComand}">
-                <TextBlock Text="Choose" Margin="5,0,5,0"/>
-            </Button>
-            <TextBlock Text="Path:" DockPanel.Dock="Left" />
-            <TextBox Text="{Binding Solution.Path}" />
-        </DockPanel>
         <ScrollViewer Focusable="False" VerticalScrollBarVisibility="Visible" Margin="5,0,5,0">
             <ItemsControl Focusable="False" VerticalAlignment="Center"
                           ItemsSource="{Binding Solution.ProjectsList}">
