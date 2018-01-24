@@ -41,15 +41,14 @@ namespace WPFBlanksGenerator
                     {
                         Solution.Name = Path.GetFileNameWithoutExtension(openFileDialog.FileName);
                         Solution.Path = Path.GetFullPath(openFileDialog.FileName);
-                        var v = File.ReadLines()
-                        foreach (var project in )
+                        Solution.ProjectsArray = new Project[GetProjectsCount()];
+                        foreach (string line in File.ReadLines(Solution.Path))
                         {
-                            
+                            if (line.Contains("Project(\"{"))
+                            {
+                                line.Substring(line.IndexOf('='), )
+                            }
                         }
-                        Solution.ProjectsArray = new Project[]
-                        {
-                            new Project(),
-                        };
                     }
                     catch (Exception e)
                     {
@@ -58,6 +57,15 @@ namespace WPFBlanksGenerator
                     }
                 }
             }
+        }
+
+        private int GetProjectsCount()
+        {
+            int i = 0;
+            foreach (string line in File.ReadLines(Solution.Path))
+                if (line.Contains("EndProject"))
+                    i++;
+            return i;
         }
     }
 }
