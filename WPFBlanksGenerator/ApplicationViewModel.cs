@@ -10,19 +10,33 @@ namespace WPFBlanksGenerator
 {
     public class ApplicationViewModel : PropertyChange
     {
-        private const string OpenFileDialogFilter = "Solution file|*.sln";
-        private const string OpenFileDialogTitle = "Select a Solution file with WPF project";
+        private const string OpenFileDialogFilter = "Project file|*.csproj";
+        private const string OpenFileDialogTitle = "Select file csproj of WPF project";
 
-        public static Solution Solution { get; set; } = new Solution();
+        public static Project Project { get; set; } = new Project();
 
-        public ICommand SetSlnCommand { get; set; }
+        public ICommand SelectProjectCommand { get; set; }
+        public ICommand UpdateProjectCommand { get; set; }
 
         public ApplicationViewModel()
         {
-            SetSlnCommand = new RelayCommand(SetFolder, () => true);
+            SelectProjectCommand = new RelayCommand(SelectProject);
+            UpdateProjectCommand = new RelayCommand(UpdateProject, () => Project != null);
         }
 
-        private void SetFolder()
+        private void UpdateProject()
+        {
+            try
+            {
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show($"{e.Message}\n{e.StackTrace}", "Error", MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+            }
+        }
+
+        private void SelectProject()
         {
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {
@@ -37,24 +51,9 @@ namespace WPFBlanksGenerator
 
                 if (File.Exists(openFileDialog.FileName))
                 {
-                    try
-                    {
-                        Solution.Name = Path.GetFileNameWithoutExtension(openFileDialog.FileName);
-                        Solution.Path = Path.GetFullPath(openFileDialog.FileName);
-                        Solution.ProjectsArray = new Project[GetProjectsCount()];
-                        foreach (string line in File.ReadLines(Solution.Path))
-                        {
-                            if (line.Contains("Project(\"{"))
-                            {
-                                line.Substring(line.IndexOf('='), )
-                            }
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        MessageBox.Show($"{e.Message}\n{e.StackTrace}", "Error", MessageBoxButton.OK,
-                            MessageBoxImage.Error);
-                    }
+                    Project.Name = Path.GetFileNameWithoutExtension(openFileDialog.FileName);
+                    Project.Path = Path.GetFullPath(openFileDialog.FileName);
+                    OnPropertyChanged()
                 }
             }
         }
@@ -62,7 +61,7 @@ namespace WPFBlanksGenerator
         private int GetProjectsCount()
         {
             int i = 0;
-            foreach (string line in File.ReadLines(Solution.Path))
+            foreach (string line in File.ReadLines(Project.Path))
                 if (line.Contains("EndProject"))
                     i++;
             return i;

@@ -15,38 +15,24 @@
     </Window.Resources>
     <DockPanel Margin="0">
         <DockPanel DockPanel.Dock="Top">
-            <TextBlock Text="Solution:" Foreground="#5Fe9A0" DockPanel.Dock="Left" />
-            <Button Command="{Binding SetSlnCommand}" DockPanel.Dock="Right">
-                <TextBlock Text="Choose sln" Margin="5,0,5,0"/>
+            <TextBlock Text="Project:" Foreground="#5FE9A0" DockPanel.Dock="Left" />
+            <Button Command="{Binding SelectProjectCommand}" DockPanel.Dock="Right">
+                <TextBlock Text="Choose project" Margin="5,0,5,0"/>
             </Button>
-            <TextBlock Text="{Binding Solution.Name}" HorizontalAlignment="Left" />
+            <TextBlock Text="{Binding Project.Name}" HorizontalAlignment="Left" />
         </DockPanel>
         <DockPanel DockPanel.Dock="Top">
-            <TextBlock Text="Path:" Foreground="#5Fe9A0" DockPanel.Dock="Left" />
-            <TextBlock Text="{Binding Solution.Path}" HorizontalAlignment="Left" />
+            <TextBlock Text="Path:" Foreground="#5FE9A0" DockPanel.Dock="Left" />
+            <TextBlock Text="{Binding Project.Path}" HorizontalAlignment="Left" />
         </DockPanel>
-        <Button DockPanel.Dock="Bottom" Margin="5">
-            <TextBlock Text="Create WPF project" Margin="5,0,5,0"/>
+        <DockPanel DockPanel.Dock="Top">
+            <TextBlock Text="NetFramevork:" Foreground="#5FE9A0" DockPanel.Dock="Left"/>
+            <TextBlock Text="{Binding Project.Version}" HorizontalAlignment="Left"/>
+        </DockPanel>
+        <Button Command="{Binding UpdateProjectCommand}" DockPanel.Dock="Bottom" Margin="5">
+            <TextBlock Text="Update WPF project" Margin="5,0,5,0"/>
         </Button>
-            <ItemsControl Focusable="False" VerticalAlignment="Center"
-                          ItemsSource="{Binding Solution.ProjectsArray}">
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <UniformGrid Columns="1" />
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <DockPanel>
-                            <TextBlock Text="Project:" DockPanel.Dock="Left" Foreground="White" />
-                            <Button DockPanel.Dock="Right" Margin="0,0,5,0">
-                                <TextBlock Text="+" Margin="5,0,5,0" Foreground="White" />
-                            </Button>
-                            <ComboBox DockPanel.Dock="Right" Margin="5,0,5,0" />
-                            <TextBox Text="{Binding Name}" />
-                        </DockPanel>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
+        <ItemsControl Focusable="False" VerticalAlignment="Center">
+        </ItemsControl>
     </DockPanel>
 </Window>
