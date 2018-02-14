@@ -7,6 +7,7 @@ using System.Windows.Input;
 using System.Xml.Linq;
 using System.Linq;
 using MessageBox = System.Windows.MessageBox;
+using System.Xml.XPath;
 
 namespace WPFBlanksGenerator
 {
@@ -56,9 +57,9 @@ namespace WPFBlanksGenerator
                     Project.Name = Path.GetFileNameWithoutExtension(openFileDialog.FileName);
                     Project.Path = Path.GetFullPath(openFileDialog.FileName);
                     XDocument xDocument = XDocument.Load(Project.Path);
-                    XName xName = XName.Get("TargetFrameworkVersion");
-                    //Project.Version = xDocument.ElementsAfterSelf(xName).Elements().Nodes().ToString();
-                    Project.Version = xDocument.Elements().Where(x => x.Name == "TargetFrameworkVersion").FirstOrDefault().Value;
+                    XNode xRoot = xDocument.FirstNode;
+                    XNode targetFramevorkVersionNode = xRoot.XPathSelectElement("//TargetFrameworkVersion");
+                    Project.Version = targetFramevorkVersionNode.ToString();
                 }
             }
         }
