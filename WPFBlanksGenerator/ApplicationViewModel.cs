@@ -57,12 +57,13 @@ namespace WPFBlanksGenerator
                 {
                     Project.Name = Path.GetFileNameWithoutExtension(openFileDialog.FileName);
                     Project.Path = Path.GetFullPath(openFileDialog.FileName);
-                    XDocument xDocument = XDocument.Load(Project.Path);
-                    XNamespace xNamespace = xDocument.Root.GetDefaultNamespace();
-                    XmlNamespaceManager xmlNamespaceManager = new XmlNamespaceManager(new NameTable());
-                    xmlNamespaceManager.AddNamespace("", xNamespace.NamespaceName);
+                    XDocument xDocument = XDocument.Parse(File.ReadAllText(Project.Path));
+                    // XNamespace xNamespace = xDocument.Root.GetDefaultNamespace();
+                    // XmlNamespaceManager xmlNamespaceManager = new XmlNamespaceManager(new NameTable());
+                    // xmlNamespaceManager.AddNamespace("", xNamespace.NamespaceName);
                     XNode xRoot = xDocument.Root;
-                    string targetFramevorkVersionNode = xDocument.XPathSelectElement("TargetFrameworkVersion", xmlNamespaceManager).Value;
+                    // string targetFramevorkVersionNode = xDocument.XPathSelectElement("TargetFrameworkVersion", xmlNamespaceManager).Value;
+                    string targetFramevorkVersionNode = xDocument.XPathSelectElement("TargetFrameworkVersion").Value;
                     Project.Version = targetFramevorkVersionNode.ToString();
                 }
             }
