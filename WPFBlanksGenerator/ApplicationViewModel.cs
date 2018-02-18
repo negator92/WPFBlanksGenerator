@@ -50,32 +50,15 @@ namespace WPFBlanksGenerator
                 openFileDialog.Multiselect = false;
                 openFileDialog.Title = OpenFileDialogTitle;
 
-                if (openFileDialog.ShowDialog() == DialogResult.Cancel)
-                    return;
+                if (openFileDialog.ShowDialog() == DialogResult.Cancel) return;
 
-                if (File.Exists(openFileDialog.FileName))
-                {
-                    Project.Name = Path.GetFileNameWithoutExtension(openFileDialog.FileName);
-                    Project.Path = Path.GetFullPath(openFileDialog.FileName);
-                    XDocument xDocument = XDocument.Parse(File.ReadAllText(Project.Path));
-                    // XNamespace xNamespace = xDocument.Root.GetDefaultNamespace();
-                    // XmlNamespaceManager xmlNamespaceManager = new XmlNamespaceManager(new NameTable());
-                    // xmlNamespaceManager.AddNamespace("", xNamespace.NamespaceName);
-                    XNode xRoot = xDocument.Root;
-                    // string targetFramevorkVersionNode = xDocument.XPathSelectElement("TargetFrameworkVersion", xmlNamespaceManager).Value;
-                    string targetFramevorkVersionNode = xDocument.XPathSelectElement("TargetFrameworkVersion").Value;
-                    Project.Version = targetFramevorkVersionNode.ToString();
-                }
+                if (!File.Exists(openFileDialog.FileName)) return;
+                Project.Name = Path.GetFileNameWithoutExtension(openFileDialog.FileName);
+                Project.Path = Path.GetFullPath(openFileDialog.FileName);
+                XDocument xDocument = XDocument.Parse(File.ReadAllText(Project.Path));
+                string frameworkVersion = xDocument.Descendants().SingleOrDefault(e => e.Name.LocalName == "TargetFrameworkVersion").Value;
+                Project.Version = frameworkVersion;
             }
-        }
-
-        private int GetProjectsCount()
-        {
-            int i = 0;
-            foreach (string line in File.ReadLines(Project.Path))
-                if (line.Contains("EndProject"))
-                    i++;
-            return i;
         }
     }
 }
