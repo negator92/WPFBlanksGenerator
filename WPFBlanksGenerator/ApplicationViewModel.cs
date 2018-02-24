@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel;
 using System.IO;
 using System.Windows;
 using System.Windows.Forms;
@@ -7,8 +6,6 @@ using System.Windows.Input;
 using System.Xml.Linq;
 using System.Linq;
 using MessageBox = System.Windows.MessageBox;
-using System.Xml.XPath;
-using System.Xml;
 
 namespace WPFBlanksGenerator
 {
@@ -16,8 +13,31 @@ namespace WPFBlanksGenerator
     {
         private const string OpenFileDialogFilter = "Project file|*.csproj";
         private const string OpenFileDialogTitle = "Select file csproj of WPF project";
+        private string PropertyChange = @"using System;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;" +
+$"\n\nnamespace {Project.Name}\n" +
+@"{
+    [Serializable]
+    public class PropertyChange : INotifyPropertyChanged
+    {
+        [field: NonSerialized]
+        public virtual event PropertyChangedEventHandler PropertyChanged;
 
-        public static Project Project { get; set; } = new Project();
+        public virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        public virtual void OnPropertyChanged(params string[] propertyNames)
+        {
+            foreach (string propertyName in propertyNames)
+                OnPropertyChanged(propertyName);
+        }
+    }
+}";
+
+        public static Project Project { get; } = new Project();
 
         public ICommand SelectProjectCommand { get; set; }
         public ICommand UpdateProjectCommand { get; set; }
@@ -32,6 +52,11 @@ namespace WPFBlanksGenerator
         {
             try
             {
+                string file = Project.Path.Substring(0, Project.Path.Length - (Project.Name.Length + 7)) +
+                              nameof(PropertyChange) + @".cs";
+                OnPropertyChanged(Project.Name);
+                OnPropertyChanged(PropertyChange);
+                File.WriteAllText(file, PropertyChange);
             }
             catch (Exception e)
             {
