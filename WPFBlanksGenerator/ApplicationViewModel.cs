@@ -13,11 +13,58 @@ namespace WPFBlanksGenerator
     {
         private const string OpenFileDialogFilter = "Project file|*.csproj";
         private const string OpenFileDialogTitle = "Select file csproj of WPF project";
-        private string PropertyChange = @"using System;
+
+        private string RelayCommandSource
+        {
+            get => @"using System;
+using System.Windows.Input;" +
+                   $"\n\nnamespace {Project.Name}\n" +
+                   @"{
+    public class RelayCommand<T> : ICommand
+    {
+        protected Action<T> execute;
+        protected Func<T, bool> canExecute;
+
+        public RelayCommand(Action<T> execute) : this(execute, (Func<T, bool>)null) { }
+
+        public RelayCommand(Action<T> execute, Func<bool> canExecute) : this(execute, t => canExecute()) { }
+
+        public RelayCommand(Action<T> execute, Func<T, bool> canExecute)
+        {
+            this.execute = execute ?? throw new ArgumentNullException(nameof(execute));
+            this.canExecute = canExecute ?? (t => true);
+        }
+
+        public RelayCommand() { }
+
+        public void Execute(object parameter) => execute((T)parameter);
+        public bool CanExecute(object parameter) => canExecute((T)parameter);
+
+        public event EventHandler CanExecuteChanged
+        {
+            add { CommandManager.RequerySuggested += value; }
+            remove { CommandManager.RequerySuggested -= value; }
+        }
+    }
+
+    public class RelayCommand : RelayCommand<object>
+    {
+        public RelayCommand(Action execute) : base(t => execute()) { }
+        public RelayCommand(Action<object> execute) : base(execute) { }
+        public RelayCommand(Action<object> execute, Func<object, bool> canExecute) : base(execute, canExecute) { }
+        public RelayCommand(Action execute, Func<bool> canExecute) : base(t => execute(), t => canExecute()) { }
+        public RelayCommand(Action<object> execute, Func<bool> canExecute) : base(execute, canExecute) { }
+    }
+}";
+        }
+
+        private string PropertyChangeSource
+        {
+            get => @"using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;" +
-$"\n\nnamespace {Project.Name}\n" +
-@"{
+                   $"\n\nnamespace {Project.Name}\n" +
+                   @"{
     [Serializable]
     public class PropertyChange : INotifyPropertyChanged
     {
@@ -36,6 +83,7 @@ $"\n\nnamespace {Project.Name}\n" +
         }
     }
 }";
+        }
 
         public static Project Project { get; } = new Project();
 
@@ -52,11 +100,15 @@ $"\n\nnamespace {Project.Name}\n" +
         {
             try
             {
-                string file = Project.Path.Substring(0, Project.Path.Length - (Project.Name.Length + 7)) +
+                string propertyChengedFile = Project.Path.Substring(0, Project.Path.Length - (Project.Name.Length + 7)) +
                               nameof(PropertyChange) + @".cs";
-                OnPropertyChanged(Project.Name);
-                OnPropertyChanged(PropertyChange);
-                File.WriteAllText(file, PropertyChange);
+                string relayCommandFile = Project.Path.Substring(0, Project.Path.Length - (Project.Name.Length + 7)) +
+                                          nameof(RelayCommand) + @".cs";
+//                OnPropertyChanged(Project.Name);
+//                OnPropertyChanged(PropertyChangeSource);
+//                OnPropertyChanged(RelayCommandSource);
+                File.WriteAllText(propertyChengedFile, PropertyChangeSource);
+                File.WriteAllText(relayCommandFile, RelayCommandSource);
             }
             catch (Exception e)
             {
@@ -81,7 +133,8 @@ $"\n\nnamespace {Project.Name}\n" +
                 Project.Name = Path.GetFileNameWithoutExtension(openFileDialog.FileName);
                 Project.Path = Path.GetFullPath(openFileDialog.FileName);
                 XDocument xDocument = XDocument.Parse(File.ReadAllText(Project.Path));
-                string frameworkVersion = xDocument.Descendants().SingleOrDefault(e => e.Name.LocalName == "TargetFrameworkVersion").Value;
+                string frameworkVersion = xDocument.Descendants()
+                    .SingleOrDefault(e => e.Name.LocalName == "TargetFrameworkVersion").Value;
                 Project.Version = frameworkVersion;
             }
         }
