@@ -14,6 +14,34 @@ namespace WPFBlanksGenerator
         private const string OpenFileDialogFilter = "Project file|*.csproj";
         private const string OpenFileDialogTitle = "Select file csproj of WPF project";
 
+        public XDocument XDocumentSelected { get; set; }
+
+        private string FodyWeaversSource
+        {
+            get => "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n" +
+"<Weavers>\n" +
+"  <PropertyChanged />\n" +
+"  <Costura />\n" +
+"</Weavers>";
+        }
+
+        private string AppXamlSource
+        {
+            get => @"using System.Windows;" +
+                   $"\n\nnamespace {Project.Name}\n" +
+@"{
+    public partial class App : Application
+    {
+        public ApplicationViewModel ApplicationViewModel { get; set; }
+
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            ApplicationViewModel = new ApplicationViewModel();
+        }
+    }
+}";
+        }
+
         private string RelayCommandSource
         {
             get => @"using System;
@@ -100,15 +128,18 @@ using System.Runtime.CompilerServices;" +
         {
             try
             {
-                string propertyChengedFile = Project.Path.Substring(0, Project.Path.Length - (Project.Name.Length + 7)) +
-                              nameof(PropertyChange) + @".cs";
+                string propertyChangeFile = Project.Path.Substring(0, Project.Path.Length - (Project.Name.Length + 7)) +
+                                            nameof(PropertyChange) + @".cs";
                 string relayCommandFile = Project.Path.Substring(0, Project.Path.Length - (Project.Name.Length + 7)) +
                                           nameof(RelayCommand) + @".cs";
-//                OnPropertyChanged(Project.Name);
-//                OnPropertyChanged(PropertyChangeSource);
-//                OnPropertyChanged(RelayCommandSource);
-                File.WriteAllText(propertyChengedFile, PropertyChangeSource);
+                string appXamlFile = Project.Path.Substring(0, Project.Path.Length - (Project.Name.Length + 7)) +
+                                     nameof(App) + @".xaml.cs";
+                string fodyWeaversFile = Project.Path.Substring(0, Project.Path.Length - (Project.Name.Length + 7)) +
+                                         @"FodyWeavers.xml";
+                File.WriteAllText(propertyChangeFile, PropertyChangeSource);
                 File.WriteAllText(relayCommandFile, RelayCommandSource);
+                File.WriteAllText(appXamlFile, AppXamlSource);
+                File.WriteAllText(fodyWeaversFile, FodyWeaversSource);
             }
             catch (Exception e)
             {
@@ -132,8 +163,8 @@ using System.Runtime.CompilerServices;" +
                 if (!File.Exists(openFileDialog.FileName)) return;
                 Project.Name = Path.GetFileNameWithoutExtension(openFileDialog.FileName);
                 Project.Path = Path.GetFullPath(openFileDialog.FileName);
-                XDocument xDocument = XDocument.Parse(File.ReadAllText(Project.Path));
-                string frameworkVersion = xDocument.Descendants()
+                XDocumentSelected = XDocument.Parse(File.ReadAllText(Project.Path));
+                string frameworkVersion = XDocumentSelected.Descendants()
                     .SingleOrDefault(e => e.Name.LocalName == "TargetFrameworkVersion").Value;
                 Project.Version = frameworkVersion;
             }
