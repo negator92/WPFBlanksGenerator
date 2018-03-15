@@ -130,16 +130,19 @@ using System.Runtime.CompilerServices;" +
             {
                 string propertyChangeFile = Project.Path.Substring(0, Project.Path.Length - (Project.Name.Length + 7)) +
                                             nameof(PropertyChange) + @".cs";
+                File.WriteAllText(propertyChangeFile, PropertyChangeSource);
+                XDocumentSelected.Descendants().FirstOrDefault(e => e.Name.LocalName == "Compile").AddAfterSelf(new XElement($"Compile Include=\"{nameof(PropertyChange) + ".cs"}\"", ""));
                 string relayCommandFile = Project.Path.Substring(0, Project.Path.Length - (Project.Name.Length + 7)) +
                                           nameof(RelayCommand) + @".cs";
+                File.WriteAllText(relayCommandFile, RelayCommandSource);
+                XDocumentSelected.Descendants().FirstOrDefault(e => e.Name.LocalName == "Compile").AddAfterSelf(new XElement($"Compile Include=\"{nameof(RelayCommand) + ".cs"}\"", ""));
                 string appXamlFile = Project.Path.Substring(0, Project.Path.Length - (Project.Name.Length + 7)) +
                                      nameof(App) + @".xaml.cs";
+                File.WriteAllText(appXamlFile, AppXamlSource);
                 string fodyWeaversFile = Project.Path.Substring(0, Project.Path.Length - (Project.Name.Length + 7)) +
                                          @"FodyWeavers.xml";
-                File.WriteAllText(propertyChangeFile, PropertyChangeSource);
-                File.WriteAllText(relayCommandFile, RelayCommandSource);
-                File.WriteAllText(appXamlFile, AppXamlSource);
                 File.WriteAllText(fodyWeaversFile, FodyWeaversSource);
+                //XDocumentSelected.Descendants().FirstOrDefault(e => e.Name.LocalName == "Compile").AddAfterSelf(new XElement($"Compile Include=\"{nameof(PropertyChange) + ".cs"}\"", "FodyWeavers.xml"));
             }
             catch (Exception e)
             {
